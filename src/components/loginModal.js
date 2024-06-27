@@ -1,4 +1,4 @@
-// src/components/LoginSignupModal.js
+import { useAuth } from '../context/auth-context';
 import React, { useState } from 'react';
 import { Modal, Box, Tab, Tabs, TextField, Button } from '@mui/material';
 import FormGenerator from './formGenerator';
@@ -6,9 +6,9 @@ import { toast } from "react-toastify";
 import axios from 'axios';
 import { rootUrl } from '../helpers';
 const LoginSignupModal = ({ open, handleClose }) => {
-//   const classes = useStyles();
   const [tabIndex, setTabIndex] = useState(0);
 
+  const auth = useAuth()
 
   const handleTabChange = (newValue) => {
     setTabIndex(newValue);
@@ -17,7 +17,9 @@ const LoginSignupModal = ({ open, handleClose }) => {
 
   const handleLoginSubmit = async (data) => {
 
-  
+    auth.login(data, () => {
+      handleClose()
+    })
   };
 
   const handleSignupSubmit = async (data) => {
@@ -28,30 +30,22 @@ const LoginSignupModal = ({ open, handleClose }) => {
   }
       
   try{
-
       const response = await axios.post(rootUrl('/users'), data)
-
       console.log(response)
-
       if(response.data.status == 200){
           toast.success('Successful')
           setTabIndex(0)
       }else{
         toast.error(response.data.message)
       }
-
   }catch(e){
       toast.error(e?.message)
   }
-
-
   };
-
   const loginFields = [
     { type: 'text', name: 'email', label: 'Email', required:true },
     { type: 'password', name: 'password', label: 'Password', required:true },
   ]
-
   const signUpFields = [
     { type: 'text', name: 'firstName', label: 'First Name', required: true },
     { type: 'text', name: 'otherName', label: 'Other Name' },
@@ -73,11 +67,6 @@ const LoginSignupModal = ({ open, handleClose }) => {
       className=''
     >
       <Box className='bg-white mt-20 h-[90vh] fixed w-full bottom-0 rounded-t-3xl overflow-y-auto'>
-        {/* <Tabs value={tabIndex} onChange={handleTabChange} centered>
-          <Tab label="Login" />
-          <Tab label="Sign Up" />
-        </Tabs> */}
-
         <div className='flex justify-center p-5 m-5'>
         {tabIndex === 0 && (
             <div>

@@ -20,21 +20,19 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(getUser);
   let login = async (values, callback) => {
     try {
-      const response = await axios.post(rootUrl("users/login"), values)
-
-      if (response.data.data) {
+      const response = await axios.post(rootUrl("/login"), values)
+      if(response.data.status == 200){
         const fetchedUser = response.data.data
-        
-        localStorage.setItem("personId", fetchedUser.personId)
-        localStorage.setItem(fetchedUser.personId, JSON.stringify(fetchedUser))
+          localStorage.setItem("userId", fetchedUser.userId)
+          localStorage.setItem(fetchedUser.userId, JSON.stringify(fetchedUser))
+          setUser(response.data.data)
+          toast.success("Login Successful")
+          callback()
 
-        setUser(response.data.data)
+    }else{
+      toast.error(response.data.message)
+    }
 
-        toast.success("Login Successful")
-        callback()
-      } else {
-        toast.error("Invalid Username or Password")
-      }
     } catch (error) {
       toast.error("An error occured while logging in")
       toast.error(error?.message)
