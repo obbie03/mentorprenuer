@@ -7,8 +7,9 @@ import { ThemeProvider } from "@material-tailwind/react";
 import { ToastContainer } from "react-toastify";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import routes from './router';
-import { AuthProvider, RequireAuth } from './context/auth-context';
+import { AuthProvider } from './context/auth-context';
 import 'react-toastify/dist/ReactToastify.css';
+import 'antd/dist/reset.css';
 
 const router = createBrowserRouter(routes)
 
@@ -17,10 +18,8 @@ root.render(
   <React.StrictMode>
     <ThemeProvider>
     <AuthProvider>
-    <RequireAuth>
       <RouterProvider router={router} />
       <ToastContainer />
-      </RequireAuth>
       </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>

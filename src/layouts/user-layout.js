@@ -5,10 +5,8 @@ import NavBar from '../components/userNavBar';
 export default function Userlayout() {
   return (
     <div>
-        <NavBar/>
-        
+            <NavBar/>
             <Outlet/>
-        
     </div>
   )
 }

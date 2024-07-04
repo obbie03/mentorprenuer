@@ -31,7 +31,6 @@ const LoginSignupModal = ({ open, handleClose }) => {
       
   try{
       const response = await axios.post(rootUrl('/users'), data)
-      console.log(response)
       if(response.data.status == 200){
           toast.success('Successful')
           setTabIndex(0)
@@ -53,6 +52,21 @@ const LoginSignupModal = ({ open, handleClose }) => {
     { type: 'text', name: 'email', label: 'Email', required: true },
     { type: 'text', name: 'phoneNumber', label: 'Phone Number', required: true },
     { type: 'date', name: 'dateOfBirth', label: 'Date of Birth', required: true },
+    { type: 'select', name: 'gender', label: 'Gender', options:[
+      {
+        value:'',
+        name:'Select gender'
+      },
+      {
+        value:'Male',
+        name:'Male'
+      },
+      {
+        value:'Female',
+        name:'Female'
+      }
+    ], 
+    required: true },
     { type: 'text', name: 'educationLevel', label: 'Highest Level of Education', required: true },
     { type: 'text', name: 'fieldOfStudy', label: 'Field of Study', required: true },
     { type: 'password', name: 'password', label: 'Password', required: true },

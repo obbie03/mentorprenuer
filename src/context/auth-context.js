@@ -4,14 +4,14 @@ import { createContext, useContext, useState } from "react";
 import { toast } from "react-toastify";
 
 import LoginSignupModal from "../components/loginModal";
-let AuthContext = createContext(null)
+const AuthContext = createContext({ user: null, login: null, logOut: null });
+
 
 export function AuthProvider({ children }) {
   const getUser = () => {
-    const personId = localStorage.getItem("personId")
+    const personId = localStorage.getItem("userId")
     try {
       const userData = JSON.parse(localStorage.getItem(personId))
-
       return userData
     } catch (error) {
       return null
@@ -28,7 +28,6 @@ export function AuthProvider({ children }) {
           setUser(response.data.data)
           toast.success("Login Successful")
           callback()
-
     }else{
       toast.error(response.data.message)
     }
@@ -45,7 +44,6 @@ export function AuthProvider({ children }) {
   };
 
   let value = { user, login, logOut }
-
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
@@ -63,7 +61,7 @@ export function RequireAuth({ children }) {
     };
 
     const auth = useAuth();
-    if (!auth.user) {
+    if (!auth || !auth.user) {
       handleOpenModal();
     }
     return (
@@ -76,6 +74,10 @@ export function RequireAuth({ children }) {
     );
   }
 
-export function useAuth() {
-  return useContext(AuthContext)
-}
+  export function useAuth() {
+    const auth = useContext(AuthContext);
+    if (!auth) {
+      throw new Error("Auth context is null");
+    }
+    return auth;
+  }

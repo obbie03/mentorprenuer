@@ -15,20 +15,12 @@ export function ModalDefault(props) {
 
 
   return (
-    
-      
-
-      <Dialog className="p-4 z-0" size={p.size} open={p.open} >
-
+  
+      <Dialog className="fixed top-[10%] left-[25%] px-4 py-8 md:max-w-lg lg:max-w-xl xl:max-w-2xl z-0" size={p.size} open={p.open} >
+      {/* <Dialog className="fixed top-[10%] left-[25%] px-4 py-8 md:max-w-lg lg:max-w-xl xl:max-w-2xl z-0" size={p.size} open={p.open} > */}
         <DialogHeader className="justify-between">
           <Typography className="text-lg font-bold">{p.title}</Typography>
-          <IconButton
-            color="gray"
-            size="sm"
-            variant="text"
-            onClick={p.onClose}
-          >
-            <svg
+          <button onClick={p.onClose}><svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -41,18 +33,16 @@ export function ModalDefault(props) {
                 strokeLinejoin="round"
                 d="M6 18L18 6M6 6l12 12"
               />
-            </svg>
-          </IconButton>
+            </svg></button>
         </DialogHeader>
         <hr></hr>
         <DialogBody>
-          <div className="overflow-y-auto max-h-[75vh]">
+          <div className="overflow-y-auto max-h-[60vh]">
             {p.body}
           </div>
-          
         </DialogBody>
       </Dialog>
-  
+     
   );
 }
 
