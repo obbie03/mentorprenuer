@@ -67,7 +67,37 @@ const LoginSignupModal = ({ open, handleClose }) => {
       }
     ], 
     required: true },
-    { type: 'text', name: 'educationLevel', label: 'Highest Level of Education', required: true },
+    { type: 'select', name: 'educationLevel', label: 'Highest Level of Education',
+    options:[
+      {
+        value:'',
+        name:'Select level'
+      },
+      {
+        value:'1',
+        name:'Grade 12 certificate'
+      },
+      {
+        value:'2',
+        name:'Technical/Craft Certificate'
+      },
+      {
+        value:'3',
+        name:'Diploma'
+      },
+      {
+        value:'4',
+        name:'Bachelor’s Degree'
+      },
+      {
+        value:'5',
+        name:'Master’s Degree'
+      },
+      {
+        value:'6',
+        name:'PhD'
+      }
+    ], required: true },
     { type: 'text', name: 'fieldOfStudy', label: 'Field of Study', required: true },
     { type: 'password', name: 'password', label: 'Password', required: true },
     { type: 'password', name: 'confirmPassword', label: 'Confirm Password', required: true },

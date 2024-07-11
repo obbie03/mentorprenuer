@@ -8,6 +8,7 @@ import Cohorts from "./pages/facilitator/cohorts/cohorts"
 import ManageCohort from "./pages/facilitator/cohorts/manage"
 import Settings from "./pages/facilitator/settings"
 import Profile from "./pages/user/profile"
+import CohortView from "./pages/user/cohort"
 
 const routes = [
     {
@@ -21,6 +22,10 @@ const routes = [
             {
                 path: "/profile",
                 element: <Profile />,
+            },
+            {
+                path: "/cohort/:id",
+                element: <CohortView />,
             },
 
         ]

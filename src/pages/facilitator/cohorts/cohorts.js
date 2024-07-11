@@ -18,8 +18,8 @@ export default function Cohorts() {
     const [modal, setModal] = useState({title:'', open:false, body:'', size:'sm'})
 
     const fields = [
-        {type:'text', name:'name', label:'Name'},
-        {type:'textarea', name:'description', label:'Description'},
+        {type:'text', name:'name', label:'Name', required:true},
+        {type:'textarea', name:'description', label:'Description', required:true},
     ]
 
     const fetchData = async () => {

@@ -3,7 +3,7 @@ import { useAuth } from '../../context/auth-context'
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { formatDate, rootUrl } from '../../helpers';
-import { FaRegUserCircle, FaUserCircle } from 'react-icons/fa';
+import { FaRegUserCircle, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
 
 export default function Profile() {
 
@@ -30,20 +30,30 @@ export default function Profile() {
     useEffect(()=>{
       fetchData()
     },[])
+
+    const logout = () => {
+        auth.logOut(()=>{
+          window.location.href='/';
+        })
+    }
     
   return (
-    <div>
+    <div className='pb-20'>
       <div className='bg-white p-4 flex justify-center items-center rounded-bl-3xl rounded-br-3xl pb-5'> 
         <div  className='flex justify-center items-center'>
-        <FaRegUserCircle size={100} color='gray' />
+        <FaRegUserCircle size={150} color='gray' />
         {bioData && 
           <div className='ml-3 font-semibold text-gray-500 text-lg'>
-          <p>{bioData.firstName} {bioData.otherName} {bioData.lastName}</p>
-          <p>{bioData.gender}</p>
-          <p>{formatDate(bioData.dob)}</p>
+          <span>{bioData.firstName} {bioData.otherName} {bioData.lastName}</span> <br/>
+          <span>{bioData.gender}</span> <br/>
+          <span>{bioData.dob}</span> <br/>
+
+          <FaSignOutAlt onClick={logout} size={25} className='text-red-500'/>
           </div>
         }
         </div>
+
+        
         
       </div>
 

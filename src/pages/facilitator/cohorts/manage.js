@@ -2,7 +2,7 @@ import { Language, ManageHistory } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import data from '../../../data/questions.json';
-import { Collapse, Radio, Input, Checkbox } from 'antd';
+import { Collapse, Radio, Input, Checkbox, message } from 'antd';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { formatDate, rootUrl } from '../../../helpers';
@@ -10,10 +10,13 @@ import { toast } from 'react-toastify';
 import { FaTrash } from 'react-icons/fa';
 import { Chip } from '@material-tailwind/react';
 import ConfirmationDialog from '../../../components/ConfirmationDialog'
+import { useAuth } from '../../../context/auth-context';
 
 export default function ManageCohort() {
   const { id } = useParams();
   const { name } = useParams();
+
+  const auth = useAuth();
 
   const [informations, setInformation] = useState([]);
   const [experiences, setExperience] = useState([]);
@@ -54,13 +57,11 @@ useEffect(()=>{
 },[])
 
 const delloc = (id) => {
-    
     setLocations(locations.filter(location => location.id != id));
 }
 
 
 const dellan = (id) => {
-    
     setLanguages(languages.filter(language => language.id != id));
 }
 
@@ -116,8 +117,6 @@ const additional = (name) => {
                 }
                 </>
     )
-
-        
 
 }
 
@@ -187,7 +186,51 @@ const additional = (name) => {
         title: 'Warning',
         message: 'Are you sure you want to submit these questions?',
         onConfirm: async () => {
-            toast.success("Successfull")
+
+          var questions = [
+            ...data.Information.map((res) => res.id),
+            ...data.Experience.map((res) => res.id)
+          ];
+        
+          var other = [
+            {
+              type:"slots",
+              arr:[startDate]
+            },
+            ...act,
+            {
+              type:'location',
+              arr: locations.map((res)=>res.name)
+            },
+            {
+              type:'language',
+              arr: languages.map((res)=>res.name)
+            },
+          ]
+        
+          var payload = {
+            cid:auth.user.cid,
+            questions:questions,
+            other:other
+          }
+
+          try{
+
+            const response = await axios.post(rootUrl('/cohortQuestions'), payload)
+
+            console.log(response)
+
+            if(response.data.status  == 200){
+
+              toast.success("Successful")
+
+            }else{
+              toast.error("Something went wrong")
+            }
+
+          }catch(e){
+            toast.error(e?.message)
+          }
             
         }
     });

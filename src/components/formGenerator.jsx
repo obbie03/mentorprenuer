@@ -2,29 +2,50 @@ import { Typography } from '@material-tailwind/react';
 import React, { useState } from 'react';
 import { FiSend } from 'react-icons/fi';
 
-const FormGenerator = ({ fields, onSubmit, initialValues={}, componentChange }) => {
+const FormGenerator = ({ fields, sections, onSubmit, initialValues={}, componentChange }) => {
   const [formData, setFormData] = useState({...initialValues});
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const validateField = (field, value) => {
-    const { required, minLength, maxLength, label } = field;
+    const { required, minLength, maxLength, label, type  } = field;
     let error = "";
 
-    if (required && !value) {
-      error = `${label} is required.`;
-    } else if (minLength && value.length < minLength) {
-      error = `${label} must be at least ${minLength} characters.`;
-    } else if (maxLength && value.length > maxLength) {
-      error = `${label} must be less than ${maxLength} characters.`;
+    if (required) {
+      if (type === 'checkbox') {
+        if (!value || value.length === 0) {
+          error = `${label} is required.`;
+        }
+      } else {
+        if (!value) {
+          error = `${label} is required.`;
+        }
+      }
+    } else if (value && type === 'string') {
+      if (minLength && value.length < minLength) {
+        error = `${label} must be at least ${minLength} characters.`;
+      } else if (maxLength && value.length > maxLength) {
+        error = `${label} must be less than ${maxLength} characters.`;
+      }
     }
-
     return error;
   };
 
   const handleChange = (field) => (event) => {
-    const { name, onChange } = field;
-    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    const { name, onChange, type  } = field;
+    let value;
+    // const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    if (field.type === 'checkbox') {
+      const { checked, value: checkboxValue } = event.target;
+      const currentValues = formData[name] || [];
+      if (checked) {
+        value = [...currentValues, checkboxValue];
+      } else {
+        value = currentValues.filter(item => item !== checkboxValue);
+      }
+    } else {
+      value = event.target.value;
+    }
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -34,7 +55,6 @@ const FormGenerator = ({ fields, onSubmit, initialValues={}, componentChange }) 
       ...prevErrors,
       [name]: error,
     }));
-
     if (onChange) {
       onChange(value);
     }
@@ -78,12 +98,24 @@ const FormGenerator = ({ fields, onSubmit, initialValues={}, componentChange }) 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newErrors = {};
-    fields.forEach((field) => {
-      const error = validateField(field, formData[field.name]);
-      if (error) {
-        newErrors[field.name] = error;
-      }
-    });
+    if (sections) {
+      sections.forEach((section) => {
+        section.fields.forEach((field) => {
+          const error = validateField(field, formData[field.name]);
+          if (error) {
+            newErrors[field.name] = error;
+          }
+        });
+      });
+    } else {
+      fields.forEach((field) => {
+        const error = validateField(field, formData[field.name]);
+        if (error) {
+          newErrors[field.name] = error;
+        }
+      });
+    }
+    
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
@@ -100,25 +132,39 @@ const FormGenerator = ({ fields, onSubmit, initialValues={}, componentChange }) 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      
-        {fields.map((field, index) => (
+      {sections ? (
+        sections.map((section, sectionIndex) => (
+          <div key={sectionIndex} className="space-y-4">
+            <hr className='my-2' />
+            <Typography variant='h4' className='font-bold text-2xl'>{section.title}</Typography>
+            <hr className='my-2'/>
+            {section.fields.map((field, fieldIndex) => (
+              <div key={fieldIndex}>
+                <Typography className='font-semibold'>{field.label || field.name}</Typography>
+                {renderInput(field)}
+                {errors[field.name] && <p className="text-red-500">{errors[field.name]}</p>}
+              </div>
+            ))}
+          </div>
+        ))
+      ) : (
+        fields.map((field, index) => (
           <div key={index}>
             <Typography variant='lead' className='font-semibold'>{field.label || field.name}</Typography>
             {renderInput(field)}
             {errors[field.name] && <p className="text-red-500">{errors[field.name]}</p>}
           </div>
-        ))}
-      
+        ))
+      )}
       <div className='flex justify-center'>
-      <button
-        type="submit"
-        className="bg-red-500 flex items-center text-lg text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        disabled={loading} 
-      >
-        {loading ? <span className="loader"></span> : 'Submit'}
-      </button>
+        <button
+          type="submit"
+          className="bg-red-500 flex items-center text-lg text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          disabled={loading} 
+        >
+          {loading ? <span className="loader"></span> : 'Submit'}
+        </button>
       </div>
-      
     </form>
   );
 };

@@ -4,7 +4,7 @@
             "id":1,
             "question":"In which area are you located?",
             "addition":"location",
-            "type":"checkbox",
+            "type":"radio",
             "options":[],
             "category":"both"
         },
@@ -12,24 +12,24 @@
             "id":2,
             "question":"Are you able to understand any of the langauages below?",
             "addition":"language",
-            "type":"select",
+            "type":"radio",
             "options":["Yes", "No"],
             "category":"both"
         },
         {
             "id":3,
-            "question":"Are you available during the communicated slots?",
+            "question":"Are you available on {date} for the Mentorship Kick-off Meeting with your Mentor in Lusaka (on own transport costs or virtually)?",
             "addition":"slots",
-            "type":"select",
-            "options":["Yes", "No"],
+            "type":"radio",
+            "options":["Yes~2", "No~0"],
             "category":"both"
         },
         {
             "id":4,
-            "question":"How many hours weekly are you willing to dedicate?",
+            "question":"How many hours per week are you willing to dedicate to MENTORpreneur Zambia™ in the next 4-6 months? (single choice)",
             "addition":"",
-            "type":"text",
-            "options":[],
+            "type":"radio",
+            "options":["1hr/week~0", "2hrs/week~1", "3hrs/week~2", "6hrs/week~3", "more than 6 hrs/week~3"],
             "category":"both"
         }
     ],
@@ -62,7 +62,7 @@
         },
         {
             "id":6,
-            "question":"How many years of experience do you?",
+            "question":"How many years of experience do you have?",
             "addition":"",
             "type":"text",
             "options":[],
@@ -72,21 +72,21 @@
             "id":7,
             "question":"Do you have any of these certificates?",
             "addition":"certificates",
-            "type":"select",
+            "type":"radio",
             "options":["Yes", "No"],
             "category":"Mentor"
         },
         {
             "id":8,
-            "question":"Have you done any of these trainings?",
+            "question":"Did you complete any of the following training courses?",
             "addition":"trainings",
-            "type":"select",
+            "type":"radio",
             "options":["Yes", "No"],
             "category":"Mentor"
         },
         {
             "id":9,
-            "question":"Have many mentorship experience years do you have?",
+            "question":"How many years of mentorship experience do you have?",
             "addition":"",
             "type":"text",
             "options":[],
@@ -96,7 +96,7 @@
             "id":10,
             "question":"Is you business registered?",
             "addition":"",
-            "type":"select",
+            "type":"radio",
             "options":["Yes", "No"],
             "category":"Mentee"
         },
@@ -104,7 +104,7 @@
             "id":11,
             "question":"Is you business generating profit?",
             "addition":"",
-            "type":"select",
+            "type":"radio",
             "options":["Yes", "No"],
             "category":"Mentee"
         },
@@ -114,6 +114,22 @@
             "addition":"",
             "type":"textarea",
             "options":[],
+            "category":"Both"
+        },
+        {
+            "id":13,
+            "question":"Mentoring can mitigate the risk of business failure. Which of the following definitions of Mentorship do you agree with most? ",
+            "addition":"",
+            "type":"radio",
+            "options":[
+                "Mentoring focuses on relationship-based guidance, rooted in experience, by questioning, challenging, and encouraging the mentee. Mentoring develops skills, knowledge, and/or networks to enhance mentees’ personal and/or professional growth ~ 2",
+                "Mentoring describes the guidance provided by a mentor, especially an experienced person in a company or educational institution. ~1",
+                "Mentoring teaches specific knowledge training for an entrepreneur to boost his/her business ~0",
+                "Mentoring matches an experienced business consultant with an entrepreneur. The entrepreneur has to listen and gets a business consultancy from the Mentor who will write a business plan and work to achieve it under the Mentor’s supervision & decision-making. ~0",
+                "In a mentoring practise, a mentee, who is a self-reflective, growth-oriented individual will be matched with a mentor, who shares succsess and failure and gives support for free to achieve the mentee’s intrinsic goal.~2 ",
+                "Mentorship is a dynamic and collaborative relationship between an experienced, knowledgeable individual (the mentor) and a less-experienced individual or team (the mentee) with a shared goal of fostering and accelerating creative thinking, problem-solving, and the development of novel ideas, products, or processes. ~2",
+                "Mentorship is a collaborative relationship between a seasoned, knowledgeable individual (the mentor) and an entrepreneur (the mentee) aimed at fostering sustainable & green growth, productivity, and resilience. The mentor provides guidance, expertise, and support tailored to the unique challenges and opportunities faced by SMEs, including aspects such as production and harvest techniques, market access, value chain integration, financial management, and innovation adoption. ~2"
+            ],
             "category":"Both"
         }
     ]
