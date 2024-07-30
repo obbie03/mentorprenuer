@@ -31,6 +31,14 @@
             "type":"radio",
             "options":["1hr/week~0", "2hrs/week~1", "3hrs/week~2", "6hrs/week~3", "more than 6 hrs/week~3"],
             "category":"both"
+        },
+        {
+            "id":14,
+            "question":"Are you applying to be a mentor or mentee?",
+            "addition":"",
+            "type":"radio",
+            "options":["Mentor~0", "Mentee~0"],
+            "category":"both"
         }
     ],
     "Experience":[
@@ -70,18 +78,18 @@
         },
         {
             "id":7,
-            "question":"Do you have any of these certificates?",
-            "addition":"certificates",
+            "question":"Do you have any of the following certifications available for professionals in the fields of banking, finance, insurance, and accounting?",
+            "addition":"",
             "type":"radio",
-            "options":["Yes", "No"],
-            "category":"Mentor"
+            "options":["Yes~2", "No~0"],
+            "category":"Both"
         },
         {
             "id":8,
             "question":"Did you complete any of the following training courses?",
             "addition":"trainings",
             "type":"radio",
-            "options":["Yes", "No"],
+            "options":["Yes~2", "No~0"],
             "category":"Mentor"
         },
         {
@@ -131,6 +139,21 @@
                 "Mentorship is a collaborative relationship between a seasoned, knowledgeable individual (the mentor) and an entrepreneur (the mentee) aimed at fostering sustainable & green growth, productivity, and resilience. The mentor provides guidance, expertise, and support tailored to the unique challenges and opportunities faced by SMEs, including aspects such as production and harvest techniques, market access, value chain integration, financial management, and innovation adoption. ~2"
             ],
             "category":"Both"
+        },
+        {
+            "id":15,
+            "question":"At what stage is your business? ",
+            "addition":"",
+            "type":"radio",
+            "options":[
+                "Pre-launch~0",
+                "Less than a year~1",
+                "1-3 years~1",
+                "3- 5 years~2",
+                "5-10 years~2",
+                "10+ years ~2"
+                ],
+            "category":"Mentee"
         }
     ]
 

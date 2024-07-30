@@ -61,14 +61,14 @@ const FormGenerator = ({ fields, sections, onSubmit, initialValues={}, component
   };
 
   const renderInput = (field) => {
-    const { type, name, options, component } = field;
+    const { type, name, options, component, link } = field;
     const handleChangeEvent = handleChange(field);
     switch (type) {
       case "textarea":
-        return <textarea name={name} onChange={handleChangeEvent} className="w-full p-2 border rounded-md text-lg font-normal focus:outline-none focus:border-blue-500" />;
+        return <textarea name={name} onChange={handleChangeEvent} className="w-full p-2 border rounded-md font-normal focus:outline-none focus:border-blue-500" />;
       case "select":
         return (
-          <select name={name} onChange={handleChangeEvent} className="w-full p-2 border rounded-md text-lg font-normal focus:outline-none focus:border-blue-500">
+          <select name={name} onChange={handleChangeEvent} className="w-full p-2 border rounded-md font-normal focus:outline-none focus:border-blue-500">
             {options.map((option, index) => (
               <option key={index} value={option.value}>{option.name}</option>
             ))}
@@ -76,18 +76,31 @@ const FormGenerator = ({ fields, sections, onSubmit, initialValues={}, component
         );
       case "radio":
         return options.map((option, index) => (
-          <label key={index} className="flex items-center text-lg font-normal">
+          <label key={index} className="flex items-center font-normal mt-2">
             <input type="radio" name={name} value={option.value} onChange={handleChangeEvent} className="mr-2" />
             {option.name}
           </label>
         ));
       case "checkbox":
         return options.map((option, index) => (
-          <label key={index} className="flex items-center text-lg font-normal">
+          <label key={index} className="flex items-center font-normal mt-2">
             <input type="checkbox" name={name} value={option.value} onChange={handleChangeEvent} className="mr-2" />
             {option.name}
           </label>
         ));
+    case "link":
+        return options.map((option, index) => (
+          <>
+          <label key={index} className="flex items-center font-normal mt-2">
+            <input type="checkbox" name={name} value={option.value} onChange={handleChangeEvent} className="mr-2" />
+            {option.name}
+          </label>
+          <div className="mt-2">
+          <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">{name}</a>
+        </div>
+          </>
+        ));
+        
       case "component":
         return component;
       default:
@@ -140,7 +153,7 @@ const FormGenerator = ({ fields, sections, onSubmit, initialValues={}, component
             <hr className='my-2'/>
             {section.fields.map((field, fieldIndex) => (
               <div key={fieldIndex}>
-                <Typography className='font-semibold'>{field.label || field.name}</Typography>
+                <Typography className='font-semibold text-lg' style={{ whiteSpace: 'pre-line' }}>{field.label || field.name}</Typography>
                 {renderInput(field)}
                 {errors[field.name] && <p className="text-red-500">{errors[field.name]}</p>}
               </div>

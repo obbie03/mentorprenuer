@@ -1,8 +1,10 @@
 // src/components/NavBar.jsx
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, InputBase, Box } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
+
 import { AiOutlineBell, AiOutlineHome, AiOutlineOrderedList, AiOutlineUser } from 'react-icons/ai';
 
 const SearchBox = styled('div')(({ theme }) => ({
@@ -43,7 +45,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
+
+
+
+
 export default function NavBar() {
+
+  const navigate = useNavigate();
+
+  const handleClick = (link) => {
+    navigate(link); 
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor: '#fff' }}>
@@ -62,7 +75,7 @@ export default function NavBar() {
                 <AiOutlineBell size={30} />
                 </IconButton>
           </Box>
-          <IconButton edge="end">
+          <IconButton onClick={()=>handleClick('/profile')} edge="end">
             <AiOutlineUser size={30} />
           </IconButton>
         </Toolbar>

@@ -19,6 +19,7 @@ const LoginSignupModal = ({ open, handleClose }) => {
 
     auth.login(data, () => {
       handleClose()
+      window.location.reload()
     })
   };
 

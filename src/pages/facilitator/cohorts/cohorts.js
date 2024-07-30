@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FaListCheck, FaPlus } from 'react-icons/fa6'
+import { FaListCheck, FaPlus, FaUsers } from 'react-icons/fa6'
 import FormGenerator from '../../../components/formGenerator'
 import ModalDefault from '../../../components/ModalDefault'
 import { useAuth } from '../../../context/auth-context'
@@ -8,6 +8,7 @@ import axios from 'axios'
 import { rootUrl } from '../../../helpers'
 import { Spinner } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
+import { FaCogs } from 'react-icons/fa'
 
 
 export default function Cohorts() {
@@ -99,12 +100,23 @@ export default function Cohorts() {
                     <div className='mt-5 pt-5'>
                     <ul className="grid grid-cols-3 gap-4">
                     {cohorts.map((res) => (
-                        <Link key={res.id} to={`/facilitator/cohorts/manage/${res.id}/${res.name}`}>
+                        
                       <li key={res.id} className="bg-gray-200 p-4 rounded shadow-md">
                           <h2 className="text-xl font-semibold">{res.name}</h2>
                           <p className="text-gray-600">{res.description}</p>
+                          <hr className='my-1'/>
+
+                          <div className='flex justify-between text-lg'>
+                            <Link key={res.id} to={`/facilitator/cohorts/manage/${res.id}/${res.name}`}>
+                                <FaCogs className='text-orange-500' />
+                            </Link>
+
+                            <Link key={res.id} to={`/facilitator/cohorts/users/${res.id}/${res.name}`}>
+                                <FaUsers className='text-blue-500'/>
+                            </Link>
+                          </div>
                       </li>
-                      </Link>
+                      
                     ))}
                   </ul>
                   </div>

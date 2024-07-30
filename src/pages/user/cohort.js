@@ -16,6 +16,9 @@ export default function CohortView() {
     const [cohort, setCohort] = useState([]);
     const [loader, setLoader] = useState(true);
     const [sections, setSections] = useState([]);
+    const [activeButton, setActiveButton] = useState(null);
+
+    const [type, setType] = useState('');
 
     const [status, setState] = useState(9);
 
@@ -34,7 +37,7 @@ export default function CohortView() {
             setQuestions(questions);
             setOptions(options);
             setCohort(cohort);
-            setState(user[0].state);
+            setState(user[0]?.state);
             setLoader(false);
         } catch (e) {
             toast.error(e?.message);
@@ -44,14 +47,6 @@ export default function CohortView() {
     const processOptions = (res, options) => {
         let neededInfo = [];
         if (res.options.length != 0) {
-            if (options.find(opt => opt.type === res.addition)) {
-                if (res.addition == 'slots') {
-                    res.question = res.question.replace('{date}', options.find(opt => opt.type == 'slots').valuez);
-                } else {
-                    
-                    res.question += options.find(opt => opt.type == res.addition).valuez.replace(/\|/g, '\n');
-                }
-            }
             res.options.forEach(ult => {
                 neededInfo.push({ value: ult.split('~')[0], name: ult.split('~')[0] });
             });
@@ -65,13 +60,30 @@ export default function CohortView() {
         return neededInfo;
     };
 
+    const processQuest = (res)=>{
+        if (res.options.length != 0) {
+            if (options.find(opt => opt.type == res.addition)) {
+                if (res.addition == 'slots') {
+                    res.question = res.question.replace('{date}', options.filter(opt => opt.type == 'slots')[0]?.valuez);
+                } else {
+                    const appendedText = options.filter(opt => opt.type == res.addition)[0]?.valuez.replace(/\|/g, '\n');
+                    if(!res.question.includes(appendedText)){
+                        res.question += '\n' + options.filter(opt => opt.type == res.addition)[0]?.valuez.replace(/\|/g, '\n');
+                    }
+                    
+                }
+            }
+        }
+        return res.question
+    }
+
     const getQuest = () => {
-        const info = data.Information.filter(a => questions.map(res => parseInt(res.id)).includes(a.id));
-        const exp = data.Experience.filter(a => questions.map(res => parseInt(res.id)).includes(a.id));
+        const info = data.Information.filter(a => questions.map(res => parseInt(res.qid)).includes(a.id) && (a.category.toLowerCase() == type ||  a.category.toLowerCase() == 'both'));
+        const exp = data.Experience.filter(a => questions.map(res => parseInt(res.qid)).includes(a.id) && (a.category.toLowerCase() == type ||  a.category.toLowerCase() == 'both'));
 
         const infoField = info.map(res => ({
             name: res.id,
-            label: res.question,
+            label: processQuest(res),
             type: res.type,
             options: processOptions(res, options),
             required:true
@@ -79,7 +91,7 @@ export default function CohortView() {
 
         const expField = exp.map(res => ({
             name: res.id,
-            label: res.question,
+            label: processQuest(res),
             type: res.type,
             options: processOptions(res, options),
             required:true
@@ -90,9 +102,10 @@ export default function CohortView() {
             { title: "2. Experience", fields: expField },
             { title: "Terms and Conditions", fields: [
                 {
-                    type: 'checkbox',
-                    name: 'terms&conditions',
-                    label: 'Terms and Conditions',
+                    type: 'link',
+                    name: 'Click here to open terms and conditions',
+                    label: 'Terms and Conditions apply',
+                    link: 'https://webapp.mentorpreneur.net/Mentor_Agreement_General_2024.pdf',
                     required:true,
                     options: [
                       { value: 'tsandcs', name: 'Agree to terms and conditions', },
@@ -108,9 +121,13 @@ export default function CohortView() {
 
     useEffect(() => {
         getQuest();
-    }, [questions]);
+    }, [questions, type]);
 
     const handleSubmit = async (data) => {
+        
+        data['14'] = type
+
+        console.log(data)
         const payload = {
             data:data,
             uid:auth.user.id,
@@ -118,7 +135,6 @@ export default function CohortView() {
         }
         try{
             const response = await axios.post(rootUrl(`/answers`), payload)
-
             console.log(response.data)
             if(response.data.status == 200){
                 toast.success("Successful")
@@ -133,6 +149,11 @@ export default function CohortView() {
         
     };
 
+    const render = (type)=>{
+        setType(type)
+        setActiveButton(type);
+    }
+
     return (
         <div className='bg-white rounded m-5 p-2 shadow'>
             {loader ? (
@@ -140,7 +161,7 @@ export default function CohortView() {
                 <Spinner className="h-20 w-20 text-gray-300" />
             ) : (
                 <div className='w-[80%] ml-[10%] pb-20 mt-2'>
-                    <div className='mb-5'>
+                    <div className='mb-5 bg-red-500 text-white p-1 rounded shadow-lg text-center'>
                         <span className='font-bold text-lg'>{cohort[0].name}</span>
                         <p>{cohort[0].description}</p>
                     </div>
@@ -148,7 +169,20 @@ export default function CohortView() {
                     :status == 1?<div className='border border-top flex items-center justify-between p-3'>  Approved <FaCircle className='text-green-500 ml-3'/> </div>:
                     status == 2?<div className='border border-top flex items-center justify-between p-3'>  Rejected <FaCircle className='text-red-500 ml-3'/> </div>:
                     <div>
-                        <FormGenerator sections={sections} onSubmit={handleSubmit} />
+
+                    <div className='flex justify-center'>
+                        <button onClick={()=>render('mentor')} className={`py-3 px-6 rounded-3xl border border-red-500 m-5 font-bold ${activeButton === 'mentor' ? 'bg-red-500 text-white' : ''}`}>Mentor</button>
+                        <button onClick={()=>render('mentee')} className={`py-3 px-6 rounded-3xl border border-red-500 m-5 font-bold ${activeButton === 'mentee' ? 'bg-red-500 text-white' : ''}`}>Mentee</button>
+                    </div>
+                        {
+                            type.length == 0?(
+                                <></>
+                            ):(
+                                <FormGenerator sections={sections} onSubmit={handleSubmit} />
+                            )
+                        }
+
+                        
                     </div>}
                     
                 </div>
