@@ -82,7 +82,7 @@
             "addition":"",
             "type":"radio",
             "options":["Yes~2", "No~0"],
-            "category":"Both"
+            "category":"Mentor"
         },
         {
             "id":8,
@@ -154,8 +154,23 @@
                 "10+ years ~2"
                 ],
             "category":"Mentee"
+        },
+        {
+            "id":16,
+            "question":"What’s the name of your business? ",
+            "addition":"",
+            "type":"text",
+            "options":[],
+            "category":"Mentee"
+        },
+        {
+            "id":17,
+            "question":"How many years of formal business mentorship have you had?",
+            "addition":"",
+            "type":"text",
+            "options":[],
+            "category":"Mentee"
         }
     ]
-
 
 }

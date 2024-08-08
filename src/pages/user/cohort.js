@@ -105,7 +105,7 @@ export default function CohortView() {
                     type: 'link',
                     name: 'Click here to open terms and conditions',
                     label: 'Terms and Conditions apply',
-                    link: 'https://webapp.mentorpreneur.net/Mentor_Agreement_General_2024.pdf',
+                    link: type=="mentor"?'https://webapp.mentorpreneur.net/Mentor_Agreement_General_2024.pdf':'https://webapp.mentorpreneur.net/Mentee_Agreement_General_2024.pdf',
                     required:true,
                     options: [
                       { value: 'tsandcs', name: 'Agree to terms and conditions', },
@@ -127,7 +127,6 @@ export default function CohortView() {
         
         data['14'] = type
 
-        console.log(data)
         const payload = {
             data:data,
             uid:auth.user.id,
@@ -135,7 +134,6 @@ export default function CohortView() {
         }
         try{
             const response = await axios.post(rootUrl(`/answers`), payload)
-            console.log(response.data)
             if(response.data.status == 200){
                 toast.success("Successful")
                 setState(0)
